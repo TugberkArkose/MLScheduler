@@ -403,7 +403,8 @@ class SchedulerLocality:
 
         # Order by score
         threads.sort(key = lambda thread: thread.hetero_score, reverse=True)
-
+        for thread in threads:
+            print "score " + str(thread.hetero_score) + " ID " + str(thread.thread_id)
         if len(threads) >= 4:
             if (sim.stats.time() / 1e12) > 5:
                 a = threads[0].thread_stats
