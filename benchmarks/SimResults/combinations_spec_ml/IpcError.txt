@@ -1,0 +1,136 @@
+cmp_astarlbmtontoh264ref.o9261760
+system mean : 0.586550805582
+system std : 0.228400168414
+system ann mean : 1.4392468349
+system ann std : 0.366063517091
+system nqp mean : 0.086778184633
+system nqp std : 0.0785031687941
+
+cmp_astarzeusmpcactusADMGemsFDTD.o9261766
+system mean : 0.151509780333
+system std : 0.12914943696
+system ann mean : 0.511034844608
+system ann std : 0.131218058966
+system nqp mean : 0.114113590536
+system nqp std : 0.144044598801
+
+cmp_bwavesgcccactusADMastar.o9261752
+system mean : 0.39347291241
+system std : 0.17480636333
+system ann mean : 0.786437345069
+system ann std : 0.184979182746
+system nqp mean : 0.190059251795
+system nqp std : 0.178232160525
+
+cmp_bwavesgcccactusADMgromacs.o9261754
+system mean : 0.148849761767
+system std : 0.158161577047
+system ann mean : 0.447007430221
+system ann std : 0.17409651431
+system nqp mean : 0.172263239323
+system nqp std : 0.173769232017
+
+cmp_bwavesgcccactusADMmilc.o9261753
+system mean : 0.374512290018
+system std : 0.957608971751
+system ann mean : 0.635896345447
+system ann std : 0.303423479582
+system nqp mean : 0.215201938246
+system nqp std : 0.222972773065
+
+cmp_bwavesgcccactusADMsoplex.o9261751
+system mean : 0.346269156085
+system std : 0.319985798085
+system ann mean : 0.731715650701
+system ann std : 0.488189629613
+system nqp mean : 0.232265794992
+system nqp std : 0.237162891717
+
+cmp_bwavesgccmcfhmmer.o9261755
+system mean : 0.213783111498
+system std : 0.106203925484
+system ann mean : 0.400233867175
+system ann std : 0.224491388253
+system nqp mean : 0.229067434235
+system nqp std : 0.180370415357
+
+cmp_bwavesgccmcfleslie3d.o9261756
+system mean : 0.327607855029
+system std : 0.276795372685
+system ann mean : 0.543846764246
+system ann std : 0.369551075645
+system nqp mean : 0.230053458239
+system nqp std : 0.180000713279
+
+cmp_bwavesGemsFDTDastaromnetpp.o9261757
+system mean : 0.582693792858
+system std : 0.161235544193
+system ann mean : 0.913575881905
+system ann std : 0.282796264122
+system nqp mean : 0.099360099995
+system nqp std : 0.0908695947803
+
+cmp_calculixlibquantumzeusmpsjeng.o9261764
+system mean : 0.1355802016
+system std : 0.115783779239
+system ann mean : 0.572092276142
+system ann std : 0.272067129459
+system nqp mean : 0.0921211093484
+system nqp std : 0.0630350894348
+
+cmp_namdgromacscalculixcactusADM.o9261761
+system mean : 0.0699250019388
+system std : 0.0713570243119
+system ann mean : 0.189953025382
+system ann std : 0.0103736370006
+system nqp mean : 0.128437889413
+system nqp std : 0.119857467579
+
+cmp_perlbenchgamessbzip2calculix.o9261759
+system mean : 0.107952198429
+system std : 0.0902674032537
+system ann mean : 0.265311936408
+system ann std : 0.0841171871265
+system nqp mean : 0.127574922872
+system nqp std : 0.0766412029201
+
+cmp_povraygromacslibquantumbzip2.o9261767
+system mean : 0.147658335719
+system std : 0.156139644776
+system ann mean : 0.6615424277
+system ann std : 0.302270471938
+system nqp mean : 0.0734121102392
+system nqp std : 0.100855142988
+
+cmp_sjengleslie3dgobmkmilc.o9261765
+system mean : 0.283891148974
+system std : 0.876153380729
+system ann mean : 0.433855450917
+system ann std : 0.346783137772
+system nqp mean : 0.0547045996658
+system nqp std : 0.09656327562
+
+cmp_sjengpovrayomnetppmilc.o9261763
+system mean : 0.251213987568
+system std : 1.19066250713
+system ann mean : 0.39950599402
+system ann std : 0.288892195269
+system nqp mean : 0.0309239268766
+system nqp std : 0.072000844303
+
+cmp_soplexmcfcalculixgcc.o9261758
+system mean : 0.177621251932
+system std : 0.200756099849
+system ann mean : 0.588401443999
+system ann std : 0.356021013928
+system nqp mean : 0.228976390052
+system nqp std : 0.147627816715
+
+cmp_zeusmpxalancbmknamdgobmk.o9261762
+system mean : 0.0854091111921
+system std : 0.0720675287429
+system ann mean : 0.246173613127
+system ann std : 0.114710283187
+system nqp mean : 0.0973372711072
+system nqp std : 0.106891535473
+

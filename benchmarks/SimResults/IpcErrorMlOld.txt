@@ -1,0 +1,121 @@
+combinations_spec_ml/cmp_bwavesgcccactusADMastar.o9259319
+big_mean_square_error : 0.0878918980478
+small_mean_square_error : 0.010317817381
+system_mean_square_error : 0.155647552996
+big_percentage_error : 0.114599617396
+small_percentage_error : 0.0683423169613
+system_percentage_error : 0.0421932946462
+big_std : 0.488154617875
+small_std : 0.348689694712
+system_std : 0.205333554959
+ combinations_spec_ml/cmp_bwavesgcccactusADMgromacs.o9259321
+big_mean_square_error : 0.144845116354
+small_mean_square_error : 0.0225762762462
+system_mean_square_error : 0.21974748649
+big_percentage_error : 0.103157912576
+small_percentage_error : 0.105271948395
+system_percentage_error : 0.0439793010134
+big_std : 0.365321847585
+small_std : 0.414575067614
+system_std : 0.190572073381
+ combinations_spec_ml/cmp_bwavesgcccactusADMmilc.o9259320
+big_mean_square_error : 0.0765871883126
+small_mean_square_error : 0.0197975184631
+system_mean_square_error : 0.180800945381
+big_percentage_error : 0.21134982737
+small_percentage_error : 0.204778065445
+system_percentage_error : 0.145269128504
+big_std : 0.477696137791
+small_std : 0.806858726931
+system_std : 0.837929539294
+ combinations_spec_ml/cmp_bwavesgcccactusADMsoplex.o9259318
+big_mean_square_error : 0.0652687381112
+small_mean_square_error : 0.0136962840388
+system_mean_square_error : 0.145547881038
+big_percentage_error : 0.180262966948
+small_percentage_error : 0.165189218599
+system_percentage_error : 0.0623053903909
+big_std : 1.14384301724
+small_std : 0.587315341148
+system_std : 0.249400860746
+ combinations_spec_ml/cmp_bwavesgccmcfhmmer.o9259322
+big_mean_square_error : 0.07481320548
+small_mean_square_error : 0.0132112493452
+system_mean_square_error : 0.0952247928571
+big_percentage_error : 0.416340276502
+small_percentage_error : 0.133968124996
+system_percentage_error : 0.0148091859466
+big_std : 2.17053554666
+small_std : 0.498924006633
+system_std : 0.112761177464
+ combinations_spec_ml/cmp_bwavesgccmcfleslie3d.o9259323
+big_mean_square_error : 0.0951989651769
+small_mean_square_error : 0.010105438486
+system_mean_square_error : 0.119195097003
+big_percentage_error : 1.14309364096
+small_percentage_error : 0.0693167970801
+system_percentage_error : 0.10998833148
+big_std : 3.07264220104
+small_std : 0.496876643089
+system_std : 0.278780068557
+ combinations_spec_ml/cmp_bwavesGemsFDTDastaromnetpp.o9259324
+big_mean_square_error : 0.0611276024559
+small_mean_square_error : 0.00488116452351
+system_mean_square_error : 0.113548669068
+big_percentage_error : 0.429510111028
+small_percentage_error : 0.155763051043
+system_percentage_error : 0.218629150247
+big_std : 0.346583909245
+small_std : 0.168558612419
+system_std : 0.120956281212
+ combinations_spec_ml/cmp_perlbenchgamessbzip2calculix.o9259326
+big_mean_square_error : 0.324889305343
+small_mean_square_error : 0.0240602779204
+system_mean_square_error : 0.414900728407
+big_percentage_error : 0.193199903911
+small_percentage_error : 0.0501624567153
+system_percentage_error : 0.0689535041351
+big_std : 0.441887448459
+small_std : 0.116086019991
+system_std : 0.165232759882
+ combinations_spec_ml/cmp_soplexmcfcalculixgcc.o9259325
+big_mean_square_error : 0.119302528131
+small_mean_square_error : 0.0245419305186
+system_mean_square_error : 0.198616798161
+big_percentage_error : 0.288056807164
+small_percentage_error : 0.203724235352
+system_percentage_error : 0.0244381773832
+big_std : 1.78628722622
+small_std : 0.600963603979
+system_std : 0.182809395305
+ combinations_splash_ml/cmp_choleskybarnesfftfmm.o9259327
+big_mean_square_error : 0.0533125598994
+small_mean_square_error : 0.014090641046
+system_mean_square_error : 0.0961762789744
+big_percentage_error : 0.0303152348055
+small_percentage_error : 0.0804957671928
+system_percentage_error : 0.0113603158543
+big_std : 0.229968272573
+small_std : 2.56983287035
+system_std : 0.0929508609846
+ combinations_splash_ml/cmp_choleskybarnesfftraytrace.o9259329
+big_mean_square_error : 0.0681532243448
+small_mean_square_error : 0.00794214703268
+system_mean_square_error : 0.216731412655
+big_percentage_error : 0.0385166402097
+small_percentage_error : 0.0122378540002
+system_percentage_error : 0.0128835872241
+big_std : 0.23229668544
+small_std : 0.138461552962
+system_std : 0.0929220462571
+ combinations_splash_ml/cmp_choleskybarnesfftwater.sp.o9259330
+big_mean_square_error : 0.0545175353963
+small_mean_square_error : 0.0106254236133
+system_mean_square_error : 0.0811821298316
+big_percentage_error : 0.0365634220366
+small_percentage_error : 0.0118805015602
+system_percentage_error : 0.0111990168751
+big_std : 0.208936374632
+small_std : 0.120531406574
+system_std : 0.0734499306062
+ 

@@ -1,0 +1,11 @@
+
+cmp_bwavesgcccactusADMastar/ 516550401
+cmp_bwavesgcccactusADMgromacs/ 553530703
+cmp_bwavesgcccactusADMmilc/ 588765302
+cmp_bwavesgcccactusADMsoplex/ 877810853
+cmp_bwavesgccmcfhmmer/ 767380805
+cmp_bwavesgccmcfleslie3d/ 772150321
+cmp_bwavesGemsFDTDastaromnetpp/ 796166411
+cmp_perlbenchgamessbzip2calculix/ 349415308
+cmp_soplexmcfcalculixgcc/ 717210700
+run/
