@@ -402,7 +402,7 @@ class SchedulerLocality:
         threads = [ thread for thread in self.threads.values() if thread.runnable ]
 
         # Order by score
-        threads.sort(key = lambda thread: thread.hetero_score, reverse=True)
+        threads.sort(key = lambda thread: thread.hetero_score, reverse=False)
         for thread in threads:
             print "score " + str(thread.hetero_score) + " ID " + str(thread.thread_id)
         if len(threads) >= 4:
