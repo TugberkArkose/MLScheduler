@@ -411,6 +411,7 @@ class SchedulerLocality:
                 b = threads[1].thread_stats
                 c = threads[2].thread_stats
                 d = threads[3].thread_stats
+                thread_order = [threads[0].thread_id, threads[1].thread_id, threads[2].thread_id, threads[3].thread_id]
                 if a and b and c and d:
                     self.predicted_mapping = self.predict(a, b, c, d)
 		    print self.predicted_mapping
@@ -422,10 +423,10 @@ class SchedulerLocality:
                         #print self.predicted_ipc
                         #print order
                         temp = []
-                        temp.append(self.findThread(self.threads.values(), int(order[0])))
-                        temp.append(self.findThread(self.threads.values(), int(order[1])))
-                        temp.append(self.findThread(self.threads.values(), int(order[2])))
-                        temp.append(self.findThread(self.threads.values(), int(order[3])))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[0])]))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[1])]))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[2])]))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[3])]))
                         if len(temp) == 4:
                             threads = temp
                        

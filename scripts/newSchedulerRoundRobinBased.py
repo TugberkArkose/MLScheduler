@@ -357,25 +357,31 @@ class SchedulerLocality:
         self.train_data.append(temp)
 
     def getThreadFrame(self):
-        result = []
-        frame = [ thread for thread in self.threads.values() if thread.runnable ]
-        frame.sort(key = lambda thread: thread.thread_id)
-        if(len(frame) < len(BIG) + len(SMALL)):
-            return frame
-        result.append(frame[self.frame_1])
-        result.append(frame[self.frame_2])
-        result.append(frame[self.frame_3])
-        result.append(frame[self.frame_4])
-        self.frame_1 += 1
-        self.frame_2 += 1
-        self.frame_3 += 1
-        self.frame_4 += 1
-        self.frame_1 %= len(BIG) + len(SMALL)
-        self.frame_2 %= len(BIG) + len(SMALL)
-        self.frame_3 %= len(BIG) + len(SMALL)
-        self.frame_4 %= len(BIG) + len(SMALL)
-        return result
+        running_threads =  [ thread for thread in self.threads.values() if thread.core is not None ]
+        runable_threads = [ thread for thread in self.threads.values() if thread.runnable ]
+        if len(runable_threads) <= 4:
+            return runable_threads
+        
+        next_quantum_threads = [thread for thread in runable_threads if thread not in running_threads]
+        
+        result = []        
 
+        if len(next_quantum_threads) == 4:
+            return next_quantum_threads
+        if len(next_quantum_threads) < 4:
+            t = [thread for thread in runable_threads if thread not in next_quantum_threads]
+            while len(next_quantum_threads) < 4 or runable_threads:
+                next_quantum_threads.append(runable_threads.pop())
+                
+        if len(next_quantum_threads) > 4:
+            for thread in running_threads:
+                while True:
+                    t_id = thread.thread_id
+                    t_id = (t_id + 1) % max([thread.thread_id for thread in next_quantum_threads])
+                    if t_id not in [thread.thread_id for thread in running_threads] and t_id in next_quantum_threads:
+                        result.append(self.findThread(self.threads, t_id))
+            return result
+       
 
 
     def predict(self, a, b, c, d):
@@ -426,13 +432,15 @@ class SchedulerLocality:
         self.hetero_timer += 1
 
         if len(threads) >= 4:
-            if int(sim.stats.time() / 1e12) > 5 :
+            if (sim.stats.time() / 1e12) > 5:
                 a = threads[0].thread_stats
                 b = threads[1].thread_stats
                 c = threads[2].thread_stats
                 d = threads[3].thread_stats
+                thread_order = [threads[0].thread_id, threads[1].thread_id, threads[2].thread_id, threads[3].thread_id]
                 if a and b and c and d:
                     self.predicted_mapping = self.predict(a, b, c, d)
+		    print self.predicted_mapping
                     if len(self.predicted_mapping) > 5:
                         order = self.predicted_mapping[:4]
                         self.prev_predicted_ipc = self.predicted_ipc
@@ -441,10 +449,10 @@ class SchedulerLocality:
                         #print self.predicted_ipc
                         #print order
                         temp = []
-                        temp.append(self.findThread(self.threads.values(), int(order[0])))
-                        temp.append(self.findThread(self.threads.values(), int(order[1])))
-                        temp.append(self.findThread(self.threads.values(), int(order[2])))
-                        temp.append(self.findThread(self.threads.values(), int(order[3])))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[0])]))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[1])]))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[2])]))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[3])]))
                         if len(temp) == 4:
                             threads = temp
 

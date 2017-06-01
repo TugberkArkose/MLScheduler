@@ -399,26 +399,27 @@ class SchedulerLocality:
         threads.sort(key = lambda thread: thread.thread_id, reverse=True)
 
         if len(threads) >= 4:
-            if int(sim.stats.time() / 1e12) > 5:
+            if (sim.stats.time() / 1e12) > 5:
                 a = threads[0].thread_stats
                 b = threads[1].thread_stats
                 c = threads[2].thread_stats
                 d = threads[3].thread_stats
+                thread_order = [threads[0].thread_id, threads[1].thread_id, threads[2].thread_id, threads[3].thread_id]
                 if a and b and c and d:
                     self.predicted_mapping = self.predict(a, b, c, d)
+		    print self.predicted_mapping
                     if len(self.predicted_mapping) > 5:
                         order = self.predicted_mapping[:4]
                         self.prev_predicted_ipc = self.predicted_ipc
                         self.predicted_ipc = self.predicted_mapping[4:]
                         self.predicted_ipc = float(''.join(self.predicted_ipc))
-                        print self.predicted_ipc
-                        print order
+                        #print self.predicted_ipc
+                        #print order
                         temp = []
-                        temp.append(self.findThread(self.threads.values(), int(order[0])))
-                        temp.append(self.findThread(self.threads.values(), int(order[1])))
-                        temp.append(self.findThread(self.threads.values(), int(order[2])))
-                        temp.append(self.findThread(self.threads.values(), int(order[3])))
-			print temp
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[0])]))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[1])]))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[2])]))
+                        temp.append(self.findThread(self.threads.values(), thread_order[int(order[3])]))
                         if len(temp) == 4:
                             threads = temp
 
