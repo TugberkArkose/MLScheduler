@@ -6,15 +6,22 @@ import operator
 from collections import defaultdict
 
 BIG = [0]
-SMALL = [1,2,3]
+SMALL = [1, 2, 3]
 PATH = "python /scratch/nas/1/dn/sniper-6.0/benchmarks/SimResults/myNumpy0401.py "
 #PATH = "python /home/tugberk/Bsc/DaniThesis/myNumpy0401.py "
-STATSORDER = ['brhits', 'brmisses', 'dramreqs', 'dramreads', 'dramwrites', 'dtlbaccess', 'dtlbmisses', 'itlbaccess', 'itlbmisses', 'stlbaccess',
-    'stlbmisses', 'dl1loads', 'dl1misses', 'dl1stores', 'il1loads', 'il1misses', 'il1stores','l2loads', 'l2misses', 'l2stores',
-    'l3loads', 'l3misses', 'l3stores', 'uopbr', 'uopfpaddsub', 'uopfpmuldiv', 'uopgeneric', 'uopld', 'uopst', 'uoptotal']
+STATSORDER = [
+    'brhits', 'brmisses', 'dramreqs', 'dramreads', 'dramwrites', 'dtlbaccess',
+    'dtlbmisses', 'itlbaccess', 'itlbmisses', 'stlbaccess', 'stlbmisses',
+    'dl1loads', 'dl1misses', 'dl1stores', 'il1loads', 'il1misses', 'il1stores',
+    'l2loads', 'l2misses', 'l2stores', 'l3loads', 'l3misses', 'l3stores',
+    'uopbr', 'uopfpaddsub', 'uopfpmuldiv', 'uopgeneric', 'uopld', 'uopst',
+    'uoptotal'
+]
+
 
 def getScoreMetricTime(thread_id):
     return long(sim.stats.get('thread', thread_id, 'nonidle_elapsed_time'))
+
 
 def getScoreMetricInstructions(thread_id):
     return long(sim.stats.get('thread', thread_id, 'instruction_count'))
@@ -34,14 +41,14 @@ class Thread:
         self.unscheduled = False
         self.BigIpc = 0.1
         self.SmallIpc = 0.1
-        self.score = 0       # Accumulated score
+        self.score = 0  # Accumulated score
         self.prevIPC = 0.1
         self.prevCore = None
         sim.thread.set_thread_affinity(self.thread_id, ())
 
-
     def updateScore(self, stats):
-        cycles = stats['time'][self.core].delta * sim.dvfs.get_frequency(self.core) / 1e9  # convert fs to cycles
+        cycles = stats['time'][self.core].delta * sim.dvfs.get_frequency(
+            self.core) / 1e9  # convert fs to cycles
         instrs = stats['coreinstrs'][self.core].delta
 
         if self.core in BIG:
@@ -58,11 +65,10 @@ class Thread:
 
         self.score = self.BigIpc / self.SmallIpc
 
-
     def setScore(self, score):
         self.score = score
 
-    def setCore(self, core_id, time = -1):
+    def setCore(self, core_id, time=-1):
         self.prevCore = self.core
         self.core = core_id
         if core_id is None:
@@ -70,8 +76,9 @@ class Thread:
             sim.thread.set_thread_affinity(self.thread_id, ())
         else:
             self.last_scheduled_in = time
-            sim.thread.set_thread_affinity(self.thread_id, [ c == core_id for c in range(sim.config.ncores) ])
-
+            sim.thread.set_thread_affinity(self.thread_id, [
+                c == core_id for c in range(sim.config.ncores)
+            ])
 
     def send_stats(self, stats):
 
@@ -98,7 +105,7 @@ class Thread:
                 statlist.append((stats[key])[self.core].delta)
 
             jlist = json.dumps(statlist, separators=(',', ':'))
-            proc = os.popen(PATH +str(1)+ " " + jlist).read()
+            proc = os.popen(PATH + str(1) + " " + jlist).read()
             #result = json.loads(proc)
             #code above does not work check why
             result = proc
@@ -136,53 +143,146 @@ class SchedulerLocality:
         self.icount_last = [0 for core in range(sim.config.ncores)]
         self.last_reschedule = 0
 
-
         self.sd = sim.util.StatsDelta()
         self.stats = {
-            'time': [self.getStatsGetter('performance_model', core, 'elapsed_time') for core in
-                     range(sim.config.ncores)],
-            'ffwd_time': [self.getStatsGetter('fastforward_performance_model', core, 'fastforwarded_time') for core in
-                          range(sim.config.ncores)],
-            'instrs': [self.getStatsGetter('performance_model', core, 'instruction_count') for core in
-                       range(sim.config.ncores)],
-            'coreinstrs': [self.getStatsGetter('core', core, 'instructions') for core in range(sim.config.ncores)],
-            'brhits': [self.getStatsGetter('branch_predictor', core, 'num-correct') for core in
-                       range(sim.config.ncores)],
-            'brmisses': [self.getStatsGetter('branch_predictor', core, 'num-incorrect') for core in
-                         range(sim.config.ncores)],
-            'dramreqs': [self.getStatsGetter('dram-queue', core, 'num-requests') for core in range(sim.config.ncores)],
-            'dramreads': [self.getStatsGetter('dram', core, 'reads') for core in range(sim.config.ncores)],
-            'dramwrites': [self.getStatsGetter('dram', core, 'writes') for core in range(sim.config.ncores)],
-            'dtlbaccess': [self.getStatsGetter('dtlb', core, 'access') for core in range(sim.config.ncores)],
-            'dtlbmisses': [self.getStatsGetter('dtlb', core, 'miss') for core in range(sim.config.ncores)],
-            'itlbaccess': [self.getStatsGetter('itlb', core, 'access') for core in range(sim.config.ncores)],
-            'itlbmisses': [self.getStatsGetter('itlb', core, 'miss') for core in range(sim.config.ncores)],
-            'stlbaccess': [self.getStatsGetter('stlb', core, 'access') for core in range(sim.config.ncores)],
-            'stlbmisses': [self.getStatsGetter('stlb', core, 'miss') for core in range(sim.config.ncores)],
-            'dl1loads': [self.getStatsGetter('L1-D', core, 'loads') for core in range(sim.config.ncores)],
-            'dl1misses': [self.getStatsGetter('L1-D', core, 'load-misses') for core in range(sim.config.ncores)],
-            'dl1stores': [self.getStatsGetter('L1-D', core, 'stores') for core in range(sim.config.ncores)],
-            'il1loads': [self.getStatsGetter('L1-I', core, 'loads') for core in range(sim.config.ncores)],
-            'il1misses': [self.getStatsGetter('L1-I', core, 'load-misses') for core in range(sim.config.ncores)],
-            'il1stores': [self.getStatsGetter('L1-I', core, 'stores') for core in range(sim.config.ncores)],
-            'l2loads': [self.getStatsGetter('L2', core, 'loads') for core in range(sim.config.ncores)],
-            'l2misses': [self.getStatsGetter('L2', core, 'load-misses') for core in range(sim.config.ncores)],
-            'l2stores': [self.getStatsGetter('L2', core, 'stores') for core in range(sim.config.ncores)],
-            'l3loads': [self.getStatsGetter('L3', core, 'loads') for core in range(sim.config.ncores)],
-            'l3misses': [self.getStatsGetter('L3', core, 'load-misses') for core in range(sim.config.ncores)],
-            'l3stores': [self.getStatsGetter('L3', core, 'stores') for core in range(sim.config.ncores)],
-            'uopbr': [self.getStatsGetter('interval_timer', core, 'uop_branch') for core in range(sim.config.ncores)],
-            'uopfpaddsub': [self.getStatsGetter('interval_timer', core, 'uop_fp_addsub') for core in
-                            range(sim.config.ncores)],
-            'uopfpmuldiv': [self.getStatsGetter('interval_timer', core, 'uop_fp_muldiv') for core in
-                            range(sim.config.ncores)],
-            'uopgeneric': [self.getStatsGetter('interval_timer', core, 'uop_generic') for core in
-                           range(sim.config.ncores)],
-            'uopld': [self.getStatsGetter('interval_timer', core, 'uop_load') for core in range(sim.config.ncores)],
-            'uopst': [self.getStatsGetter('interval_timer', core, 'uop_store') for core in range(sim.config.ncores)],
-            'uoptotal': [self.getStatsGetter('interval_timer', core, 'uops_total') for core in
-                         range(sim.config.ncores)],
-
+            'time': [
+                self.getStatsGetter('performance_model', core, 'elapsed_time')
+                for core in range(sim.config.ncores)
+            ],
+            'ffwd_time': [
+                self.getStatsGetter('fastforward_performance_model', core,
+                                    'fastforwarded_time')
+                for core in range(sim.config.ncores)
+            ],
+            'instrs': [
+                self.getStatsGetter('performance_model', core,
+                                    'instruction_count')
+                for core in range(sim.config.ncores)
+            ],
+            'coreinstrs': [
+                self.getStatsGetter('core', core, 'instructions')
+                for core in range(sim.config.ncores)
+            ],
+            'brhits': [
+                self.getStatsGetter('branch_predictor', core, 'num-correct')
+                for core in range(sim.config.ncores)
+            ],
+            'brmisses': [
+                self.getStatsGetter('branch_predictor', core, 'num-incorrect')
+                for core in range(sim.config.ncores)
+            ],
+            'dramreqs': [
+                self.getStatsGetter('dram-queue', core, 'num-requests')
+                for core in range(sim.config.ncores)
+            ],
+            'dramreads': [
+                self.getStatsGetter('dram', core, 'reads')
+                for core in range(sim.config.ncores)
+            ],
+            'dramwrites': [
+                self.getStatsGetter('dram', core, 'writes')
+                for core in range(sim.config.ncores)
+            ],
+            'dtlbaccess': [
+                self.getStatsGetter('dtlb', core, 'access')
+                for core in range(sim.config.ncores)
+            ],
+            'dtlbmisses': [
+                self.getStatsGetter('dtlb', core, 'miss')
+                for core in range(sim.config.ncores)
+            ],
+            'itlbaccess': [
+                self.getStatsGetter('itlb', core, 'access')
+                for core in range(sim.config.ncores)
+            ],
+            'itlbmisses': [
+                self.getStatsGetter('itlb', core, 'miss')
+                for core in range(sim.config.ncores)
+            ],
+            'stlbaccess': [
+                self.getStatsGetter('stlb', core, 'access')
+                for core in range(sim.config.ncores)
+            ],
+            'stlbmisses': [
+                self.getStatsGetter('stlb', core, 'miss')
+                for core in range(sim.config.ncores)
+            ],
+            'dl1loads': [
+                self.getStatsGetter('L1-D', core, 'loads')
+                for core in range(sim.config.ncores)
+            ],
+            'dl1misses': [
+                self.getStatsGetter('L1-D', core, 'load-misses')
+                for core in range(sim.config.ncores)
+            ],
+            'dl1stores': [
+                self.getStatsGetter('L1-D', core, 'stores')
+                for core in range(sim.config.ncores)
+            ],
+            'il1loads': [
+                self.getStatsGetter('L1-I', core, 'loads')
+                for core in range(sim.config.ncores)
+            ],
+            'il1misses': [
+                self.getStatsGetter('L1-I', core, 'load-misses')
+                for core in range(sim.config.ncores)
+            ],
+            'il1stores': [
+                self.getStatsGetter('L1-I', core, 'stores')
+                for core in range(sim.config.ncores)
+            ],
+            'l2loads': [
+                self.getStatsGetter('L2', core, 'loads')
+                for core in range(sim.config.ncores)
+            ],
+            'l2misses': [
+                self.getStatsGetter('L2', core, 'load-misses')
+                for core in range(sim.config.ncores)
+            ],
+            'l2stores': [
+                self.getStatsGetter('L2', core, 'stores')
+                for core in range(sim.config.ncores)
+            ],
+            'l3loads': [
+                self.getStatsGetter('L3', core, 'loads')
+                for core in range(sim.config.ncores)
+            ],
+            'l3misses': [
+                self.getStatsGetter('L3', core, 'load-misses')
+                for core in range(sim.config.ncores)
+            ],
+            'l3stores': [
+                self.getStatsGetter('L3', core, 'stores')
+                for core in range(sim.config.ncores)
+            ],
+            'uopbr': [
+                self.getStatsGetter('interval_timer', core, 'uop_branch')
+                for core in range(sim.config.ncores)
+            ],
+            'uopfpaddsub': [
+                self.getStatsGetter('interval_timer', core, 'uop_fp_addsub')
+                for core in range(sim.config.ncores)
+            ],
+            'uopfpmuldiv': [
+                self.getStatsGetter('interval_timer', core, 'uop_fp_muldiv')
+                for core in range(sim.config.ncores)
+            ],
+            'uopgeneric': [
+                self.getStatsGetter('interval_timer', core, 'uop_generic')
+                for core in range(sim.config.ncores)
+            ],
+            'uopld': [
+                self.getStatsGetter('interval_timer', core, 'uop_load')
+                for core in range(sim.config.ncores)
+            ],
+            'uopst': [
+                self.getStatsGetter('interval_timer', core, 'uop_store')
+                for core in range(sim.config.ncores)
+            ],
+            'uoptotal': [
+                self.getStatsGetter('interval_timer', core, 'uops_total')
+                for core in range(sim.config.ncores)
+            ],
         }
 
         args = dict(enumerate((args or '').split(':')))
@@ -200,7 +300,11 @@ class SchedulerLocality:
         #     self.cores = [ core for core in range(sim.config.ncores) if core_mask[core] ]
         # else:
         self.cores = range(sim.config.ncores)
-        sim.util.Every(1000000 * sim.util.Time.NS, self.periodic, statsdelta = self.sd, roi_only=True)
+        sim.util.Every(
+            1000000 * sim.util.Time.NS,
+            self.periodic,
+            statsdelta=self.sd,
+            roi_only=True)
         self.threads = {}
         self.last_core = 0
 
@@ -209,7 +313,8 @@ class SchedulerLocality:
         self.threads[thread_id].runnable = True
         # Initial assignment: one thread per core until cores are exhausted
         if self.last_core < len(self.cores):
-            self.threads[thread_id].setCore(self.cores[self.last_core], sim.stats.time())
+            self.threads[thread_id].setCore(self.cores[self.last_core],
+                                            sim.stats.time())
             self.last_core += 1
         else:
             self.threads[thread_id].setCore(None, sim.stats.time())
@@ -226,10 +331,13 @@ class SchedulerLocality:
             self.threads[thread_id].setCore(None, time)
             self.threads[thread_id].runnable = False
             # Schedule a new thread (runnable, but not running) on this free core
-            threads = [ thread for thread in self.threads.values() if thread.runnable and thread.core is None ]
+            threads = [
+                thread for thread in self.threads.values()
+                if thread.runnable and thread.core is None
+            ]
             if threads:
                 # Order by score
-                threads.sort(key = lambda thread: thread.score)
+                threads.sort(key=lambda thread: thread.score)
                 threads[0].setCore(core, time)
 
     def hook_thread_resume(self, thread_id, woken_by, time):
@@ -237,10 +345,14 @@ class SchedulerLocality:
             # Ignore calls due to the thread being scheduled back in
             self.threads[thread_id].unscheduled = False
         else:
-            self.threads[thread_id].setScore(max([ thread.score for thread in self.threads.values() ]))
+            self.threads[thread_id].setScore(
+                max([thread.score for thread in self.threads.values()]))
             self.threads[thread_id].runnable = True
             #If there is a free core, move us there now
-            used_cores = set([ thread.core for thread in self.threads.values() if thread.core is not None ])
+            used_cores = set([
+                thread.core for thread in self.threads.values()
+                if thread.core is not None
+            ])
             free_cores = set(self.cores) - used_cores
             if len(free_cores):
                 self.threads[thread_id].setCore(list(free_cores)[0], time)
@@ -248,18 +360,26 @@ class SchedulerLocality:
     def periodic(self, time, time_delta):
 
         # Update thread scores
-        [ thread.updateScore(self.stats) for thread in self.threads.values() if thread.core is not None ]
+        [
+            thread.updateScore(self.stats) for thread in self.threads.values()
+            if thread.core is not None
+        ]
 
         # Get a list of all runnable threads
-        threads = [ thread for thread in self.threads.values() if thread.runnable ]
+        threads = [
+            thread for thread in self.threads.values() if thread.runnable
+        ]
         # Order by score
-        threads.sort(key = lambda thread: thread.score, reverse=True)
+        threads.sort(key=lambda thread: thread.score, reverse=True)
 
         combination_size = len(BIG) + len(SMALL)
 
-        combination_big = (sorted(threads, key= lambda thread: thread.BigIpc, reverse=True)[:combination_size])
-        combination_small = (sorted(threads, key = lambda thread: thread.SmallIpc, reverse=True))[:combination_size]
-
+        combination_big = (sorted(
+            threads, key=lambda thread: thread.BigIpc,
+            reverse=True)[:combination_size])
+        combination_small = (sorted(
+            threads, key=lambda thread: thread.SmallIpc,
+            reverse=True))[:combination_size]
 
         highest_ipc = 0
         best_combination = []
@@ -283,9 +403,11 @@ class SchedulerLocality:
 
         free_cores = [0, 1, 2, 3]
         # threads = [ thread for thread in threads if thread.core is None ]
-        assert(len(free_cores) >= len(threads))
+        assert (len(free_cores) >= len(threads))
         for thread, core in zip(threads, sorted(free_cores)):
-            current_thread = [ t for t in self.threads.values() if t.core == core ]
+            current_thread = [
+                t for t in self.threads.values() if t.core == core
+            ]
             if current_thread:
                 if current_thread[0].thread_id == thread.thread_id:
                     continue
@@ -293,7 +415,6 @@ class SchedulerLocality:
 
             thread.setCore(core, time)
             assert thread.runnable
-
 
     def getStatsGetter(self, component, core, metric):
         # Some components don't exist (i.e. DRAM reads on cores that don't have a DRAM controller),
@@ -304,14 +425,17 @@ class SchedulerLocality:
         except:
 
             class Zero():
-                def __init__(self): self.delta = 0
+                def __init__(self):
+                    self.delta = 0
 
-                def update(self): pass
+                def update(self):
+                    pass
 
             return Zero()
 
     def testPrint(self):
-        print '----------- Quantum ', int(sim.stats.time() / 1e12), '------------'
+        print '----------- Quantum ', int(
+            sim.stats.time() / 1e12), '------------'
         total_ipc = 0
         for thread in self.threads.values():
             if thread.core in BIG:
@@ -330,7 +454,8 @@ class SchedulerLocality:
         print '-----------------------'
 
     def printInfo(self):
-        print '----------- Quantum ', int(sim.stats.time() / 1e12), '------------'
+        print '----------- Quantum ', int(
+            sim.stats.time() / 1e12), '------------'
         total_ipc = 0
         for thread in self.threads.values():
             if thread.core in BIG:
@@ -345,12 +470,12 @@ class SchedulerLocality:
             core_mapping[thread.core] = thread.thread_id
         for i in range(0, (len(BIG) + len(SMALL))):
             if core_mapping[i] or core_mapping[i] == 0:
-                mapping += str(core_mapping[i]) +" "
+                mapping += str(core_mapping[i]) + " "
             else:
                 mapping += "- "
-        mapping +="]"
+        mapping += "]"
 
-        if(int(sim.stats.time() / 1e12) > 1):
+        if (int(sim.stats.time() / 1e12) > 1):
             print "Misprediction : " + str(total_ipc - self.prev_predicted_ipc)
             self.prediction_gap.append(total_ipc - self.predicted_ipc)
 
@@ -367,20 +492,25 @@ class SchedulerLocality:
             core_mapping_predicted[idx] = thread.thread_id
         for i in range(0, (len(BIG) + len(SMALL))):
             if core_mapping_predicted[i] or core_mapping_predicted[i] == 0:
-                mapping += str(core_mapping_predicted[i]) +" "
+                mapping += str(core_mapping_predicted[i]) + " "
             else:
                 mapping += "- "
-        mapping +="]"
+        mapping += "]"
         print "*System Map " + mapping
 
-        if(int(sim.stats.time() / 1e12) > 1):
-            print "Avarage system misprediction : " + str(sum(self.prediction_gap) / len(self.prediction_gap))
+        if (int(sim.stats.time() / 1e12) > 1):
+            print "Avarage system misprediction : " + str(
+                sum(self.prediction_gap) / len(self.prediction_gap))
 
         for thread in self.threads.values():
             if (thread.core in BIG and thread.prevCore in SMALL):
-                print "thread id : ", str(thread.thread_id), " misprediction s2b : ", str(thread.BigIpc - thread.prevIPC)
+                print "thread id : ", str(
+                    thread.thread_id), " misprediction s2b : ", str(
+                        thread.BigIpc - thread.prevIPC)
             elif (thread.core in SMALL and thread.prevCore in BIG):
-                print "thread id : ", str(thread.thread_id), " misprediction b2s : ", str(thread.SmallIpc - thread.prevIPC)
+                print "thread id : ", str(
+                    thread.thread_id), " misprediction b2s : ", str(
+                        thread.SmallIpc - thread.prevIPC)
 
 
 sim.util.register(SchedulerLocality())
