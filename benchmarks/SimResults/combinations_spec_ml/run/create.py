@@ -1,6 +1,6 @@
 template = '''
 # Job name
-#$ -N %(hd)s%(label)s%(a)s%(b)s%(c)s
+#$ -N %(hd)s%(label)s%(a)s%(b)s%(c)s_reverse
 # Shell
 #$ -S /bin/bash
 
