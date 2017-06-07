@@ -8,13 +8,13 @@ from collections import defaultdict
 
 BIG = [0]
 SMALL = [1, 2, 3]
-#PATH = "python /scratch/nas/1/dn/sniper-6.0/benchmarks/SimResults/myNumpy0102.py "
+# PATH = "python /scratch/nas/1/dn/sniper-6.0/benchmarks/SimResults/myNumpy0102.py "
 PATH = "python /scratch/nas/1/dn/sniper-6.0/scripts/predictor_blackbox.py "
 MODELNAME = "/scratch/nas/1/dn/sniper-6.0/scripts/round_robin_model.p"
 
 accumulated_stats = []
 
-#STATSORDER = ['brhits', 'brmisses', 'dramreqs', 'dramreads', 'dramwrites', 'dtlbaccess', 'dtlbmisses', 'itlbaccess', 'itlbmisses', 'stlbaccess',
+# STATSORDER = ['brhits', 'brmisses', 'dramreqs', 'dramreads', 'dramwrites', 'dtlbaccess', 'dtlbmisses', 'itlbaccess', 'itlbmisses', 'stlbaccess',
 #    'stlbmisses', 'dl1loads', 'dl1misses', 'dl1stores', 'il1loads', 'il1misses', 'il1stores','l2loads', 'l2misses', 'l2stores',
 #    'l3loads', 'l3misses', 'l3stores', 'uopbr', 'uopfpaddsub', 'uopfpmuldiv', 'uopgeneric', 'uopld', 'uopst', 'uoptotal']
 
@@ -530,13 +530,13 @@ class SchedulerLocality:
 
         proc = os.popen(PATH + str(1) + " " + MODELNAME + " " + a + " " + b +
                         " " + c + " " + d).read()
-        #result = json.loads(proc)
-        #code above does not work check why
+        # result = json.loads(proc)
+        # code above does not work check why
         result = proc
         print result
-        #print(result)
-        #do sys call
-        #syscall(train_data)
+        # print(result)
+        # do sys call
+        # syscall(train_data)
         return result
 
     def findThread(self, threads, thread_id):
@@ -573,7 +573,7 @@ class SchedulerLocality:
         # Order by score
         if self.hetero_timer == 3:
             threads = self.getThreadFrame()
-            #continue with 4 threads
+            # continue with 4 threads
             self.hetero_timer = 0
         self.hetero_timer += 1
 
@@ -595,8 +595,8 @@ class SchedulerLocality:
                         self.prev_predicted_ipc = self.predicted_ipc
                         self.predicted_ipc = self.predicted_mapping[4:]
                         self.predicted_ipc = float(''.join(self.predicted_ipc))
-                        #print self.predicted_ipc
-                        #print order
+                        # print self.predicted_ipc
+                        # print order
                         temp = []
                         temp.append(
                             self.findThread(self.threads.values(),
@@ -636,8 +636,8 @@ class SchedulerLocality:
         proc = os.popen(PATH + str(0) + " " + MODELNAME + " " + jlist + " " +
                         statList + " ").read()
         result = proc
-        #do sys call
-        #syscall(train_data)
+        # do sys call
+        # syscall(train_data)
         self.train_cycle = 0
         self.train_data = []
         self.system_ipcs = []
@@ -680,12 +680,12 @@ class SchedulerLocality:
         print '-----------------------'
 
     def get_quantum_squareError(self, pred, y):
-        #pred is the predicted system IPC value and y is the observed IPC value after quantum
+        # pred is the predicted system IPC value and y is the observed IPC value after quantum
         e = (pred - y)**2
         return e
 
     def get_quantum_percentError(self, pred, y):
-        #pred is the predicted system IPC value and y is the observed IPC value after quantum
+        # pred is the predicted system IPC value and y is the observed IPC value after quantum
         e = abs(pred - y) / y
         return e
 

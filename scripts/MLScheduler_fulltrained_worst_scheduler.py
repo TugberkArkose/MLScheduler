@@ -376,12 +376,12 @@ class SchedulerLocality:
 
         combination_big = (sorted(
             threads, key=lambda thread: thread.BigIpc,
-            reverse=True)[:combination_size])
+            reverse=False)[:combination_size])
         combination_small = (sorted(
             threads, key=lambda thread: thread.SmallIpc,
-            reverse=True))[:combination_size]
+            reverse=False))[:combination_size]
 
-        highest_ipc = 0
+        lowest_ipc = 5000
         best_combination = []
 
         for big_thread in combination_big:
@@ -391,12 +391,12 @@ class SchedulerLocality:
                 if big_thread.thread_id != small_thread.thread_id:
                     current_ipc += small_thread.SmallIpc
                     current_combination.append(small_thread)
-            if current_ipc > highest_ipc:
-                highest_ipc = current_ipc
+            if current_ipc < lowest_ipc:
+                lowest_ipc = current_ipc
                 best_combination = current_combination
 
         self.prev_predicted_ipc = self.predicted_ipc
-        self.predicted_ipc = highest_ipc
+        self.predicted_ipc = lowest_ipc
         self.predicted_mapping = best_combination
         self.printInfo()
         threads = best_combination
