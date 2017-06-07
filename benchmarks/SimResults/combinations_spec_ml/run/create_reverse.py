@@ -52,10 +52,10 @@ for [CSCRATCHS, CSCRATCH, DATA, v] in [['/scratch/nas/1/dn/sniper-6.0', '/scratc
         for t in cpu_apps:
           del cpu_apps[cpu_apps.index(t)]
           for [ext, hd, sch, script,label] in [['1','cmp_','scheduler/pinned', '',j]]:
-            f = open('%(hd)s%(label)s%(a)s%(b)s%(c)s.sh'%{'hd':hd,'label':label, 'a':i, 'b':k, 'c':t}, 'w')
+            f = open('%(hd)s%(label)s%(a)s%(b)s%(c)s_reverse.sh'%{'hd':hd,'label':label, 'a':i, 'b':k, 'c':t}, 'w')
             f.write(template %{'hd':hd,'label':label, 'a':i,'b':k,'c':t, 'sch':sch, 'script':script, 'ext':ext, 'CSCRATCHS':CSCRATCHS, 'CSCRATCH':CSCRATCH, 'DATA':DATA, 'v':v})
             f.close()
-            torun += 'qsub -l big %(hd)s%(label)s%(a)s%(b)s%(c)s.sh\n'%{'hd':hd,'label':label, 'a':i, 'b':k, 'c':t}
+            torun += 'qsub -l big %(hd)s%(label)s%(a)s%(b)s%(c)s_reverse.sh\n'%{'hd':hd,'label':label, 'a':i, 'b':k, 'c':t}
             array += '%(label)s%(a)s%(b)s%(c)s '%{'a':i, 'label':label, 'b':k, 'c':t }
             f = open('torun_cpu_all_combination.sh', 'w')
             f.write(torun)
@@ -66,10 +66,10 @@ for [CSCRATCHS, CSCRATCH, DATA, v] in [['/scratch/nas/1/dn/sniper-6.0', '/scratc
 
   for [ext, hd, sch, script] in [['1','cmp_','scheduler/pinned', '']]:
     for i in apps:
-      f = open('%(hd)s%(label)s%(a)s%(b)s%(c)s.sh'%{'hd':hd,'label':i[0], 'a':i[1], 'b':i[2], 'c':i[3]}, 'w')
+      f = open('%(hd)s%(label)s%(a)s%(b)s%(c)s_reverse.sh'%{'hd':hd,'label':i[0], 'a':i[1], 'b':i[2], 'c':i[3]}, 'w')
       f.write(template %{'hd':hd,'label':i[0], 'a':i[1],'b':i[2],'c':i[3], 'sch':sch, 'script':script, 'ext':ext, 'CSCRATCHS':CSCRATCHS, 'CSCRATCH':CSCRATCH, 'DATA':DATA, 'v':v})
       f.close()
-      torun += 'qsub -l big %(hd)s%(label)s%(a)s%(b)s%(c)s.sh\n'%{ 'hd':hd,'label':i[0], 'a':i[1], 'b':i[2], 'c':i[3] }
+      torun += 'qsub -l big %(hd)s%(label)s%(a)s%(b)s%(c)s_reverse.sh\n'%{ 'hd':hd,'label':i[0], 'a':i[1], 'b':i[2], 'c':i[3] }
       array += '%(label)s%(a)s%(b)s%(c)s '%{'label':i[0], 'a':i[1], 'b':i[2], 'c':i[3]}
       f = open('torun_cpu_all_combination.sh', 'w')
       f.write(torun)
