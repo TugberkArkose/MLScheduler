@@ -348,7 +348,7 @@ class SchedulerLocality:
             self.threads[thread_id].setScore(
                 max([thread.score for thread in self.threads.values()]))
             self.threads[thread_id].runnable = True
-            #If there is a free core, move us there now
+            # If there is a free core, move us there now
             used_cores = set([
                 thread.core for thread in self.threads.values()
                 if thread.core is not None
