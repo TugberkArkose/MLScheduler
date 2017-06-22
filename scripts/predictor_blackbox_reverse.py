@@ -6,7 +6,6 @@ from sklearn.externals import joblib
 import pickle
 import os.path
 import itertools
-import time
 
 
 params_to_use_per_thread = ['uopBR_Norm', 'uopFPtotal_Norm', 'uopGeneric_Norm', 'uopLD_Norm', 'DL1miss_Norm', 'L2miss_Norm','L3miss_Norm',
@@ -61,18 +60,17 @@ def save_model(model,fname):
     joblib.dump(model,fname)
 
 def predict(a, b, c, d, model):
-    
     prediction_stats = [a] + [b] + [c] + [d]
     permutations = []
     perm = list(itertools.permutations([0,1,2,3], 4))
     for i in perm:
         permutations.append(list(i))
-    ipc = 0
+    ipc = 5000
     mapping = ""
     for i in perm:
         system_ipc = get_sysIPC_prediction(prediction_stats[int(i[0])], prediction_stats[int(i[1])], prediction_stats[int(i[2])], prediction_stats[int(i[3])], model)[0]
         # print system_ipc
-        if system_ipc >= ipc:
+        if system_ipc < ipc:
             mapping = str(i[0]) + str(i[1]) + str(i[2]) + str(i[3])
             ipc = system_ipc
     return mapping + str(ipc)
@@ -89,23 +87,17 @@ if __name__ == '__main__':
     train_or_predict = int(sys.argv[1])
     model_name = str(sys.argv[2])
     model = loadModel(model_name)
-    start = time.time()
+
     if train_or_predict == 0:
         data = json.loads(sys.argv[3])
         ipcs = json.loads(sys.argv[4])
         continue_training(data, ipcs, model, model_name)
-        end = time.time()
-        with open("~/paper2exec.txt", "a") as myfile:
-            myfile.write("train time : " + str(start - end))
     else:
         a = json.loads(sys.argv[3])
         b = json.loads(sys.argv[4])
         c = json.loads(sys.argv[5])
         d = json.loads(sys.argv[6])
         prediction = predict(a, b, c, d, model)
-        end = time.time()
-        with open("~/paper2exec.txt", "a") as myfile:
-            myfile.write("predict time : " + str(start - end))
         print prediction
 
 

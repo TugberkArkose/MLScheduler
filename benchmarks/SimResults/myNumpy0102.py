@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import json
 import numpy.matlib as matlab
+import time
 
 stats_to_keep = [7, 15, 19, 22, 23, 24, 25, 26, 27]
 
@@ -182,7 +183,7 @@ def removeconstantrows_apply(stats):
 
 
 if __name__ == '__main__':
-
+    start = time.time()
     #if this fails try to change the os.popen paramater for this scripts location in demo.py, called path
     '''
     arg[0] is the script name
@@ -240,4 +241,7 @@ if __name__ == '__main__':
     else:
         y1 = 0
     # f.write(" prediction = " + str(y1) +"\n")
+    end = time.time()
+    with open("~/paper1exec.txt", "a") as myfile:
+        myfile.write("predict time : " + str(start - end))  
     print y1
