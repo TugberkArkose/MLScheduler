@@ -4,7 +4,7 @@ import sys
 def main():
 
     if len(sys.argv) < 3:
-        print "Use Paper2PerQuantumIPCExtractor.py <sim output in file name> <graph out name>"
+        print "example use -> python Ipc2Violin.py <sim output in file name> <graph out name>"
         sys.exit(0)
 
     # quantum = index + 1
