@@ -242,6 +242,6 @@ if __name__ == '__main__':
         y1 = 0
     # f.write(" prediction = " + str(y1) +"\n")
     end = time.time()
-    with open("~/paper1exec.txt", "a") as myfile:
+    with open("/scratch/nas/1/dn/sniper-6.0/benchmarks/SimResults/paper1exec.txt", "a") as myfile:
         myfile.write("predict time : " + str(start - end))  
     print y1

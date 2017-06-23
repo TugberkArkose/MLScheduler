@@ -95,7 +95,7 @@ if __name__ == '__main__':
         ipcs = json.loads(sys.argv[4])
         continue_training(data, ipcs, model, model_name)
         end = time.time()
-        with open("~/paper2exec.txt", "a") as myfile:
+        with open("/scratch/nas/1/dn/sniper-6.0/benchmarks/SimResults/paper2exec.txt", "a") as myfile:
             myfile.write("train time : " + str(start - end))
     else:
         a = json.loads(sys.argv[3])

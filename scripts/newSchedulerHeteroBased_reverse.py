@@ -649,10 +649,11 @@ class SchedulerLocality:
         return e
 
     def printInfo(self):
+        threads = [ thread for thread in self.threads if thread.core is not None ]
         print '----------- Quantum ', int(
             sim.stats.time() / 1e12), '------------'
         total_ipc = 0
-        for thread in self.threads.values():
+        for thread in threads:
             total_ipc += thread.ipc
         print "System IPC : " + str(total_ipc)
 
