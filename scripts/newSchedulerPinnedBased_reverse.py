@@ -10,7 +10,7 @@ BIG = [0]
 SMALL = [1, 2, 3]
 #PATH = "python /scratch/nas/1/dn/sniper-6.0/benchmarks/SimResults/myNumpy0102.py "
 PATH = "python /scratch/nas/1/dn/sniper-6.0/scripts/predictor_blackbox_reverse.py "
-MODELNAME = "/scratch/nas/1/dn/sniper-6.0/scripts/pinned_model.p"
+MODELNAME = "/scratch/nas/1/dn/sniper-6.0/scripts/MICRO_sys_predictor_full_trained.p"
 
 accumulated_stats = []
 
@@ -520,7 +520,7 @@ class SchedulerLocality:
         if len(threads_to_train) >= 4:
             self.updateTrainData(threads_to_train)
             # train
-            self.train(self.train_data)
+            # self.train(self.train_data)
 
         # Get a list of all runnable threads
         threads = [
