@@ -15,7 +15,7 @@ cp %(CSCRATCH)s/SimResults/cpu_trace/%(a)s2/%(a)s.0.sift %(a)s.0.sift
 cp %(CSCRATCH)s/SimResults/cpu_trace/%(label)s2/%(label)s.0.sift %(label)s.0.sift
 cp %(CSCRATCH)s/SimResults/cpu_trace/%(b)s2/%(b)s.0.sift %(b)s.0.sift
 cp %(CSCRATCH)s/SimResults/cpu_trace/%(c)s2/%(c)s.0.sift %(c)s.0.sift
-./sniper/run-sniper -s mytrace:stats.out -n 4 -c gainestown -c scheduler/big,scheduler/small,scheduler/small,scheduler/small -g --scheduler/type=big_small -g --scheduler/big_small/quantum=4000000 -s demorr_pinned.py --sim-end=first --power -d ~/data.$JOB_ID/result --traces=%(a)s.0.sift,%(label)s.0.sift,%(b)s.0.sift,%(c)s.0.sift
+./sniper/run-sniper -s mytrace:stats.out -n 4 -c gainestown -c scheduler/big,scheduler/small,scheduler/small,scheduler/small -g --scheduler/type=big_small -g --scheduler/big_small/quantum=4000000 -s modelTrainer.py --sim-end=first --power -d ~/data.$JOB_ID/result --traces=%(a)s.0.sift,%(label)s.0.sift,%(b)s.0.sift,%(c)s.0.sift
 cd ~/data.$JOB_ID/result
 mkdir %(CSCRATCH)s/SimResults/%(v)s/$JOB_NAME
 mv sim.* %(CSCRATCH)s/SimResults/%(v)s/$JOB_NAME
