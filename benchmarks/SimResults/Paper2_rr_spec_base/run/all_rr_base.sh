@@ -41,7 +41,7 @@ cp /scratch/nas/1/dn/sniper-6.0/benchmarks/SimResults/cpu_trace/astar2/astar.0.s
 cp /scratch/nas/1/dn/sniper-6.0/benchmarks/SimResults/cpu_trace/xalancbmk2/xalancbmk.0.sift xalancbmk.0.sift
 
 #cp /scratch/nas/1/dn/sniper-6.0/benchmarks/SimResults/cpu_trace/2/.0.sift .0.sift
-./sniper/run-sniper -s mytrace:stats.out -n 4 -c gainestown -c scheduler/big,scheduler/small,scheduler/small,scheduler/small -g --scheduler/type=big_small -g --scheduler/big_small/quantum=4000000 -s demorr_pinned.py --sim-end=last --power -d ~/data.$JOB_ID/result --traces=perlbench.0.sift,bzip2.0.sift,gcc.0.sift,bwaves.0.sift,gamess.0.sift,mcf.0.sift,milc.0.sift,zeusmp.0.sift,gromacs.0.sift,cactusADM.0.sift,leslie3d.0.sift,namd.0.sift,gobmk.0.sift,soplex.0.sift,povray.0.sift,calculix.0.sift,hmmer.0.sift,sjeng.0.sift,GemsFDTD.0.sift,libquantum.0.sift,h264ref.0.sift,tonto.0.sift,lbm.0.sift,omnetpp.0.sift,astar.0.sift,xalancbmk.0.sift
+./sniper/run-sniper -s mytrace:stats.out -n 4 -c gainestown -c scheduler/big,scheduler/small,scheduler/small,scheduler/small -g --scheduler/type=big_small -g --scheduler/big_small/quantum=4000000 -s modelTrainer.py --sim-end=last --power -d ~/data.$JOB_ID/result --traces=perlbench.0.sift,bzip2.0.sift,gcc.0.sift,bwaves.0.sift,gamess.0.sift,mcf.0.sift,milc.0.sift,zeusmp.0.sift,gromacs.0.sift,cactusADM.0.sift,leslie3d.0.sift,namd.0.sift,gobmk.0.sift,soplex.0.sift,povray.0.sift,calculix.0.sift,hmmer.0.sift,sjeng.0.sift,GemsFDTD.0.sift,libquantum.0.sift,h264ref.0.sift,tonto.0.sift,lbm.0.sift,omnetpp.0.sift,astar.0.sift,xalancbmk.0.sift
 
 
 cd ~/data.$JOB_ID/result
