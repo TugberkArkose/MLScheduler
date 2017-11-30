@@ -1,12 +1,12 @@
 # Job name
-#$ -N rr_ml_200
+#$ -N rr_ml_200_r
 # Shell
 #$ -S /bin/bash
 
 mkdir data.$JOB_ID
 cd data.$JOB_ID
 
-export GRAPHITE_ROOT=/scratch/nas/1/dn/sniper-6.0
+export GRAPHITE_ROOT=/scratch/nas/3/dn/sniper-6.0
 export BENCHMARKS_ROOT=/scratch/nas/3/dn/sniper-6.0/benchmarks
 CURRENT_ENVIRONMENT=/scratch/nas/3/dn/scikit_learn_latest
 source $CURRENT_ENVIRONMENT/bin/activate
